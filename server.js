@@ -8,7 +8,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuración de la base de datos - CAMBIA ESTOS DATOS POR LOS TUYOS
+// Configuración de la base de datos
 const sequelize = new Sequelize("databasel/r", "root", "", {
   host: "localhost",
   dialect: "mysql",
