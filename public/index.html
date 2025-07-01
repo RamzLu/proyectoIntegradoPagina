@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Quién Sabe? - Plataforma Colaborativa</title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="nav-container">
+        <div class="logo">
+          <i class="fas fa-graduation-cap"></i>
+          ¿Quién Sabe?
+        </div>
+        <nav>
+          <ul class="nav-menu">
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#preguntas">Preguntas</a></li>
+            <li><a href="#ranking">Ranking</a></li>
+            <li><a href="#perfil">Mi Perfil</a></li>
+          </ul>
+        </nav>
+        <div class="user-actions">
+          <ul>
+            <li><a href="login.html">Iniciar Sesión</a></li>
+          </ul>
+          <button class="btn-secondary" id="login-btn">Iniciar Sesión</button>
+          <button class="btn-primary" id="register-btn">Registrarse</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Hero Section -->
+      <section class="hero" id="home">
+        <div class="hero-content">
+          <h1>¡Bienvenido a ¿Quién Sabe?!</h1>
+          <p class="hero-subtitle">
+            La plataforma donde los estudiantes se ayudan mutuamente
+          </p>
+          <div class="hero-stats">
+            <div class="stat">
+              <i class="fas fa-question-circle"></i>
+              <span class="stat-number">1,247</span>
+              <span class="stat-label">Preguntas</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-users"></i>
+              <span class="stat-number">856</span>
+              <span class="stat-label">Estudiantes</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-medal"></i>
+              <span class="stat-number">2,103</span>
+              <span class="stat-label">Respuestas</span>
+            </div>
+          </div>
+          <button class="btn-hero" id="hacer-pregunta-btn">
+            <i class="fas fa-plus"></i>
+            Hacer una Pregunta
+          </button>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="quick-actions">
+        <div class="action-card">
+          <i class="fas fa-question"></i>
+          <h3>Hacer Pregunta</h3>
+          <p>¿Tenés alguna duda? ¡Preguntá y la comunidad te ayuda!</p>
+          <button class="btn-action" id="nueva-pregunta">Preguntar</button>
+        </div>
+        <div class="action-card">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Responder</h3>
+          <p>Ayudá a otros estudiantes compartiendo tu conocimiento</p>
+          <button class="btn-action" id="ver-preguntas">Ver Preguntas</button>
+        </div>
+        <div class="action-card">
+          <i class="fas fa-trophy"></i>
+          <h3>Mi Progreso</h3>
+          <p>Seguí tu nivel, medallas y contribuciones</p>
+          <button class="btn-action" id="ver-perfil">Mi Perfil</button>
+        </div>
+      </section>
+
+      <!-- Recent Questions -->
+      <section class="recent-questions" id="preguntas">
+        <h2>
+          <i class="fas fa-clock"></i>
+          Preguntas Recientes
+        </h2>
+        <div class="questions-container">
+          <!-- Question Card Template -->
+          <div class="question-card">
+            <div class="question-header">
+              <div class="user-info">
+                <div class="user-avatar">R</div>
+                <span class="username">Ramiro_15</span>
+                <span class="user-level">Nivel 2</span>
+              </div>
+              <span class="question-time">Hace 2 horas</span>
+            </div>
+            <div class="question-content">
+              <h3>¿Cómo resuelvo esta ecuación cuadrática?</h3>
+              <p>
+                Necesito ayuda con x² + 5x + 6 = 0. No entiendo cómo usar la
+                fórmula cuadrática...
+              </p>
+              <div class="question-tags">
+                <span class="tag">Matemática</span>
+                <span class="tag">Álgebra</span>
+              </div>
+            </div>
+            <div class="question-footer">
+              <div class="question-stats">
+                <span><i class="fas fa-reply"></i> 3 respuestas</span>
+                <span><i class="fas fa-star"></i> 4.2</span>
+              </div>
+              <button class="btn-respond">Responder</button>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-header">
+              <div class="user-info">
+                <div class="user-avatar">M</div>
+                <span class="username">Maria_16</span>
+                <span class="user-level">Nivel 3</span>
+              </div>
+              <span class="question-time">Hace 4 horas</span>
+            </div>
+            <div class="question-content">
+              <h3>Ayuda con análisis sintáctico</h3>
+              <p>
+                ¿Me pueden ayudar a analizar sintácticamente esta oración? "Los
+                estudiantes estudian mucho para el examen"
+              </p>
+              <div class="question-tags">
+                <span class="tag">Lengua</span>
+                <span class="tag">Sintaxis</span>
+              </div>
+            </div>
+            <div class="question-footer">
+              <div class="question-stats">
+                <span><i class="fas fa-reply"></i> 1 respuesta</span>
+                <span><i class="fas fa-star"></i> 4.8</span>
+              </div>
+              <button class="btn-respond">Responder</button>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-header">
+              <div class="user-info">
+                <div class="user-avatar">L</div>
+                <span class="username">Lucas_17</span>
+                <span class="user-level">Nivel 1</span>
+              </div>
+              <span class="question-time">Hace 6 horas</span>
+            </div>
+            <div class="question-content">
+              <h3>¿Qué es la fotosíntesis?</h3>
+              <p>
+                Tengo que hacer un trabajo sobre fotosíntesis pero no entiendo
+                bien cómo funciona el proceso...
+              </p>
+              <div class="question-tags">
+                <span class="tag">Biología</span>
+                <span class="tag">Ciencias</span>
+              </div>
+            </div>
+            <div class="question-footer">
+              <div class="question-stats">
+                <span><i class="fas fa-reply"></i> 5 respuestas</span>
+                <span><i class="fas fa-star"></i> 4.6</span>
+              </div>
+              <button class="btn-respond">Responder</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Top Contributors -->
+      <section class="top-contributors" id="ranking">
+        <h2>
+          <i class="fas fa-crown"></i>
+          Top Colaboradores del Mes
+        </h2>
+        <div class="contributors-grid">
+          <div class="contributor-card gold">
+            <div class="contributor-rank">1</div>
+            <div class="contributor-avatar">A</div>
+            <h3>Ana_Matematica</h3>
+            <div class="contributor-stats">
+              <span>Nivel 8</span>
+              <span>156 respuestas</span>
+            </div>
+            <div class="contributor-badges">
+              <i class="fas fa-medal" title="Experta en Matemática"></i>
+              <i class="fas fa-star" title="Top Contribuidor"></i>
+              <i class="fas fa-trophy" title="Mejor Respuesta del Mes"></i>
+            </div>
+          </div>
+          <div class="contributor-card silver">
+            <div class="contributor-rank">2</div>
+            <div class="contributor-avatar">C</div>
+            <h3>Carlos_Historia</h3>
+            <div class="contributor-stats">
+              <span>Nivel 7</span>
+              <span>132 respuestas</span>
+            </div>
+            <div class="contributor-badges">
+              <i class="fas fa-book" title="Experto en Historia"></i>
+              <i class="fas fa-star" title="Top Contribuidor"></i>
+            </div>
+          </div>
+          <div class="contributor-card bronze">
+            <div class="contributor-rank">3</div>
+            <div class="contributor-avatar">S</div>
+            <h3>Sofia_Ciencias</h3>
+            <div class="contributor-stats">
+              <span>Nivel 6</span>
+              <span>98 respuestas</span>
+            </div>
+            <div class="contributor-badges">
+              <i class="fas fa-atom" title="Experta en Ciencias"></i>
+              <i class="fas fa-heart" title="Ayudante Pro"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <form id="login-form">
+          <input type="text" placeholder="Usuario o Email" required />
+          <input type="password" placeholder="Contraseña" required />
+          <button type="submit" class="btn-primary">Iniciar Sesión</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Registrarse</h2>
+        <form id="register-form">
+          <input type="text" placeholder="Nombre de usuario" required />
+          <input type="email" placeholder="Email" required />
+          <input type="password" placeholder="Contraseña" required />
+          <input type="password" placeholder="Confirmar contraseña" required />
+          <button type="submit" class="btn-primary">Registrarse</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Question Modal -->
+    <div class="modal" id="question-modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Hacer una Pregunta</h2>
+        <form id="question-form">
+          <input type="text" placeholder="Título de tu pregunta" required />
+          <textarea
+            placeholder="Describe tu pregunta detalladamente..."
+            rows="5"
+            required
+          ></textarea>
+          <input type="text" placeholder="Etiquetas (separadas por comas)" />
+          <div class="file-upload">
+            <label for="image-upload">
+              <i class="fas fa-image"></i>
+              Subir imagen (opcional)
+            </label>
+            <input type="file" id="image-upload" accept="image/*" />
+          </div>
+          <button type="submit" class="btn-primary">Publicar Pregunta</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>¿Quién Sabe?</h3>
+          <p>Plataforma colaborativa para estudiantes argentinos</p>
+        </div>
+        <div class="footer-section">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="#about">Sobre nosotros</a></li>
+            <li><a href="#help">Ayuda</a></li>
+            <li><a href="#contact">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Comunidad</h4>
+          <ul>
+            <li><a href="#guidelines">Reglas de la comunidad</a></li>
+            <li><a href="#privacy">Privacidad</a></li>
+            <li><a href="#terms">Términos de uso</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 ¿Quién Sabe? - Educación colaborativa para todos</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="responder-logic.js"></script>
+  </body>
+</html>
