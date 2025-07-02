@@ -2,12 +2,147 @@
 class ResponderSystem {
   constructor() {
     this.currentAnswerId = 1;
+    this.answerVotes = new Map(); // Almacenar votos: answerId -> {likes: count, dislikes: count, userVote: 'like'/'dislike'/null}
     this.init();
   }
 
   init() {
     this.bindResponderButtons();
     this.createResponseModal();
+    this.bindVoteEvents();
+  }
+
+  // Vincular eventos de votación
+  bindVoteEvents() {
+    document.addEventListener("click", (e) => {
+      if (
+        e.target.classList.contains("vote-btn") ||
+        e.target.closest(".vote-btn")
+      ) {
+        e.preventDefault();
+        const voteBtn = e.target.classList.contains("vote-btn")
+          ? e.target
+          : e.target.closest(".vote-btn");
+        this.handleVoteClick(voteBtn);
+      }
+    });
+  }
+
+  // Manejar click en botones de voto
+  handleVoteClick(voteBtn) {
+    const answerId = voteBtn.dataset.answerId;
+    const voteType = voteBtn.dataset.voteType; // 'like' o 'dislike'
+
+    if (!answerId || !voteType) return;
+
+    this.processVote(answerId, voteType, voteBtn);
+  }
+
+  // Procesar voto
+  processVote(answerId, voteType, clickedBtn) {
+    // Inicializar votos si no existen
+    if (!this.answerVotes.has(answerId)) {
+      this.answerVotes.set(answerId, {
+        likes: 0,
+        dislikes: 0,
+        userVote: null,
+      });
+    }
+
+    const voteData = this.answerVotes.get(answerId);
+    const previousVote = voteData.userVote;
+
+    // Lógica de votación
+    if (previousVote === voteType) {
+      // Si ya votó lo mismo, remover voto
+      voteData[voteType + "s"]--;
+      voteData.userVote = null;
+    } else {
+      // Si votó diferente o no había votado
+      if (previousVote) {
+        // Remover voto anterior
+        voteData[previousVote + "s"]--;
+      }
+      // Agregar nuevo voto
+      voteData[voteType + "s"]++;
+      voteData.userVote = voteType;
+    }
+
+    // Actualizar UI
+    this.updateVoteUI(answerId, voteData);
+
+    // Simular envío al servidor
+    this.sendVoteToServer(answerId, voteType, voteData.userVote);
+  }
+
+  // Actualizar interfaz de votación
+  updateVoteUI(answerId, voteData) {
+    const answerElement = document.querySelector(
+      `[data-answer-id="${answerId}"]`
+    );
+    if (!answerElement) return;
+
+    const likeBtn = answerElement.querySelector(
+      '.vote-btn[data-vote-type="like"]'
+    );
+    const dislikeBtn = answerElement.querySelector(
+      '.vote-btn[data-vote-type="dislike"]'
+    );
+    const likeCount = answerElement.querySelector(".like-count");
+    const dislikeCount = answerElement.querySelector(".dislike-count");
+
+    // Actualizar contadores
+    if (likeCount) likeCount.textContent = voteData.likes;
+    if (dislikeCount) dislikeCount.textContent = voteData.dislikes;
+
+    // Actualizar estilos de botones
+    if (likeBtn) {
+      likeBtn.classList.toggle("voted", voteData.userVote === "like");
+      likeBtn.style.color =
+        voteData.userVote === "like" ? "#00b894" : "#636e72";
+      likeBtn.style.backgroundColor =
+        voteData.userVote === "like" ? "#e8f5e8" : "transparent";
+    }
+
+    if (dislikeBtn) {
+      dislikeBtn.classList.toggle("voted", voteData.userVote === "dislike");
+      dislikeBtn.style.color =
+        voteData.userVote === "dislike" ? "#e17055" : "#636e72";
+      dislikeBtn.style.backgroundColor =
+        voteData.userVote === "dislike" ? "#ffeaa7" : "transparent";
+    }
+  }
+
+  // Simular envío de voto al servidor
+  async sendVoteToServer(answerId, voteType, userVote) {
+    try {
+      // Aquí iría tu llamada al backend
+      /*
+      const response = await fetch('/api/answers/vote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}`
+        },
+        body: JSON.stringify({
+          answerId: answerId,
+          voteType: voteType,
+          action: userVote ? 'add' : 'remove'
+        })
+      });
+      
+      if (!response.ok) throw new Error('Error al enviar voto');
+      */
+
+      console.log(
+        `Voto enviado: ${answerId} - ${voteType} - ${
+          userVote ? "add" : "remove"
+        }`
+      );
+    } catch (error) {
+      console.error("Error enviando voto:", error);
+      this.showNotification("Error al registrar tu voto", "error");
+    }
   }
 
   // Vincular eventos a todos los botones "Responder"
@@ -400,8 +535,15 @@ class ResponderSystem {
       questionCard.querySelector(".answers-section") ||
       this.createAnswersSection(questionCard);
 
+    // Inicializar votos para esta respuesta
+    this.answerVotes.set(answerData.id, {
+      likes: 0,
+      dislikes: 0,
+      userVote: null,
+    });
+
     const answerHTML = `
-            <div class="answer-item" style="
+            <div class="answer-item" data-answer-id="${answerData.id}" style="
                 background: #e8f5e8;
                 border-left: 4px solid #00b894;
                 padding: 15px;
@@ -409,12 +551,51 @@ class ResponderSystem {
                 border-radius: 8px;
                 animation: fadeIn 0.5s ease-out;
             ">
-                <div class="answer-content" style="margin-bottom: 10px; line-height: 1.6;">
+                <div class="answer-content" style="margin-bottom: 15px; line-height: 1.6;">
                     ${answerData.content}
                 </div>
-                <div class="answer-meta" style="font-size: 12px; color: #636e72;">
-                    <i class="fas fa-user"></i> ${answerData.author} • 
-                    <i class="fas fa-clock"></i> Ahora mismo
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="answer-meta" style="font-size: 12px; color: #636e72;">
+                        <i class="fas fa-user"></i> ${answerData.author} • 
+                        <i class="fas fa-clock"></i> Ahora mismo
+                    </div>
+                    
+                    <div class="vote-buttons" style="display: flex; gap: 10px; align-items: center;">
+                        <button class="vote-btn" data-answer-id="${answerData.id}" data-vote-type="like" style="
+                            background: transparent;
+                            border: 1px solid #ddd;
+                            border-radius: 20px;
+                            padding: 6px 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            font-size: 12px;
+                            color: #636e72;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.borderColor='#00b894'" onmouseout="this.style.borderColor='#ddd'">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span class="like-count">0</span>
+                        </button>
+                        
+                        <button class="vote-btn" data-answer-id="${answerData.id}" data-vote-type="dislike" style="
+                            background: transparent;
+                            border: 1px solid #ddd;
+                            border-radius: 20px;
+                            padding: 6px 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            font-size: 12px;
+                            color: #636e72;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.borderColor='#e17055'" onmouseout="this.style.borderColor='#ddd'">
+                            <i class="fas fa-thumbs-down"></i>
+                            <span class="dislike-count">0</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -574,6 +755,20 @@ const additionalCSS = `
         to {
             transform: translateX(100%);
         }
+    }
+
+    .vote-btn.voted {
+        font-weight: 600;
+        border-width: 2px !important;
+    }
+    
+    .vote-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .vote-btn:active {
+        transform: translateY(0);
     }
 `;
 
