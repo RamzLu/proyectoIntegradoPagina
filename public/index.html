@@ -268,7 +268,7 @@
       </div>
     </div>
 
-    <!-- Question Modal -->
+    <!-- Question Modal - Reemplaza el modal existente -->
     <div class="modal" id="question-modal">
       <div class="modal-content">
         <span class="close">&times;</span>
@@ -280,13 +280,255 @@
             rows="5"
             required
           ></textarea>
-          <input type="text" placeholder="Etiquetas (separadas por comas)" />
+
+          <!-- Nuevo selector de etiquetas -->
+          <div class="tags-selector">
+            <label>Etiquetas (máximo 3):</label>
+            <div class="tag-categories">
+              <div class="tag-category">
+                <h4>Matemática</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Álgebra"
+                      data-category="Matemática"
+                    />
+                    Álgebra</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Geometría"
+                      data-category="Matemática"
+                    />
+                    Geometría</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Cálculo"
+                      data-category="Matemática"
+                    />
+                    Cálculo</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Trigonometría"
+                      data-category="Matemática"
+                    />
+                    Trigonometría</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Estadística"
+                      data-category="Matemática"
+                    />
+                    Estadística</label
+                  >
+                </div>
+              </div>
+
+              <div class="tag-category">
+                <h4>Ciencias</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Biología"
+                      data-category="Ciencias"
+                    />
+                    Biología</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Física"
+                      data-category="Ciencias"
+                    />
+                    Física</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Química"
+                      data-category="Ciencias"
+                    />
+                    Química</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Anatomía"
+                      data-category="Ciencias"
+                    />
+                    Anatomía</label
+                  >
+                </div>
+              </div>
+
+              <div class="tag-category">
+                <h4>Lengua</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Sintaxis"
+                      data-category="Lengua"
+                    />
+                    Sintaxis</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Ortografía"
+                      data-category="Lengua"
+                    />
+                    Ortografía</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Literatura"
+                      data-category="Lengua"
+                    />
+                    Literatura</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Redacción"
+                      data-category="Lengua"
+                    />
+                    Redacción</label
+                  >
+                </div>
+              </div>
+
+              <div class="tag-category">
+                <h4>Historia</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Historia Argentina"
+                      data-category="Historia"
+                    />
+                    Historia Argentina</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Historia Mundial"
+                      data-category="Historia"
+                    />
+                    Historia Mundial</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Historia Contemporánea"
+                      data-category="Historia"
+                    />
+                    Historia Contemporánea</label
+                  >
+                </div>
+              </div>
+
+              <div class="tag-category">
+                <h4>Geografía</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Países"
+                      data-category="Geografía"
+                    />
+                    Países</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Capitales"
+                      data-category="Geografía"
+                    />
+                    Capitales</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Relieve"
+                      data-category="Geografía"
+                    />
+                    Relieve</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Clima"
+                      data-category="Geografía"
+                    />
+                    Clima</label
+                  >
+                </div>
+              </div>
+
+              <div class="tag-category">
+                <h4>Otros</h4>
+                <div class="tag-options">
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Inglés"
+                      data-category="Otros"
+                    />
+                    Inglés</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Informática"
+                      data-category="Otros"
+                    />
+                    Informática</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Arte"
+                      data-category="Otros"
+                    />
+                    Arte</label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      value="Educación Física"
+                      data-category="Otros"
+                    />
+                    Educación Física</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="selected-tags">
+              <span>Etiquetas seleccionadas:</span>
+              <div class="selected-tags-container"></div>
+            </div>
+          </div>
+
           <div class="file-upload">
-            <label for="image-upload">
-              <i class="fas fa-image"></i>
-              Subir imagen (opcional)
-            </label>
-            <input type="file" id="image-upload" accept="image/*" />
+            <label for="question-image">Imagen (opcional):</label>
+            <input
+              type="file"
+              id="question-image"
+              name="questionImage"
+              accept="image/*"
+            />
+            <span class="file-info">Máximo 2MB, formatos: JPG, PNG</span>
           </div>
           <button type="submit" class="btn-primary">Publicar Pregunta</button>
         </form>
