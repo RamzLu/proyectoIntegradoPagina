@@ -1,9 +1,10 @@
 // server.js
-import bcryptjs from "bcryptjs";
-import express from "express";
-import session from "express-session";
-import path from "path";
-import { Sequelize, DataTypes } from "sequelize";
+const express = require("express");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+const path = require("path");
+const { Sequelize, DataTypes } = require("sequelize");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
