@@ -575,7 +575,7 @@ class ResponderSystem {
                   <p style="margin: 0 0 10px 0;">${answerData.content}</p>
                   ${
                     answerData.image
-                      ? `<div class="answer-image-container"><img src="${answerData.image}" style="width: 100%; border-radius: 8px; margin-top: 5px;"></div>`
+                      ? `<div class="answer-image-container"><img src="${answerData.image}" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 10px; object-fit: contain;"></div>`
                       : ""
                   }
                 </div>

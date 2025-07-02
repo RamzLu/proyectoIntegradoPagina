@@ -1137,3 +1137,14 @@ body {
   margin-top: 10px;
   border-radius: 8px;
 }
+
+.answer-content p {
+  margin: 0 0 10px 0;
+}
+
+.answer-image-container img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 8px;
+}
