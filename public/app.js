@@ -256,7 +256,6 @@ function handleRespond(e) {
   const questionId = questionCard.dataset.questionId;
 
   // Aquí implementarías la lógica para abrir un modal de respuesta
-  showNotification("Función de responder en desarrollo", "warning");
 }
 
 // Funciones de UI
@@ -395,7 +394,6 @@ function showUserProfile() {
   if (!currentUser) return;
 
   // Aquí implementarías la lógica para mostrar el perfil del usuario
-  showNotification("Función de perfil en desarrollo", "warning");
 }
 
 // Funciones de persistencia
