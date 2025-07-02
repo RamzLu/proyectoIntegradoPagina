@@ -392,15 +392,34 @@ class ResponderSystem {
     }
 
     // Simular envío (aquí iría tu llamada AJAX al backend)
-    this.submitAnswer(
-      {
-        questionId: questionData.id,
-        content: answerContent,
-        image: fileInput?.files[0] || null,
-        questionTitle: questionData.title,
-      },
-      questionCard
-    );
+    if (fileInput?.files.length > 0) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.submitAnswer(
+          {
+            questionId: questionData.id,
+            content: answerContent,
+            image: reader.result, // base64
+            questionTitle: questionData.title,
+          },
+          questionCard
+        );
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      this.submitAnswer(
+        {
+          questionId: questionData.id,
+          content: answerContent,
+          image: null,
+          questionTitle: questionData.title,
+        },
+        questionCard
+      );
+    }
   }
 
   // Simular envío de respuesta al servidor
@@ -457,7 +476,8 @@ class ResponderSystem {
     // Opcional: Agregar la respuesta al DOM para mostrarla inmediatamente
     this.addAnswerToDOM(questionCard, {
       content: answerData.content,
-      author: "Tu Usuario", // Obtener del contexto de usuario
+      image: answerData.image, // <-- ¡Esto es clave!
+      author: currentUser.username, // Podés usar currentUser.username si querés
       timestamp: new Date(),
       id: result.answerId,
     });
@@ -552,8 +572,15 @@ class ResponderSystem {
                 animation: fadeIn 0.5s ease-out;
             ">
                 <div class="answer-content" style="margin-bottom: 15px; line-height: 1.6;">
-                    ${answerData.content}
+                  <p style="margin: 0 0 10px 0;">${answerData.content}</p>
+                  ${
+                    answerData.image
+                      ? `<div class="answer-image-container"><img src="${answerData.image}" style="width: 100%; border-radius: 8px; margin-top: 5px;"></div>`
+                      : ""
+                  }
                 </div>
+
+
                 
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="answer-meta" style="font-size: 12px; color: #636e72;">
@@ -562,7 +589,9 @@ class ResponderSystem {
                     </div>
                     
                     <div class="vote-buttons" style="display: flex; gap: 10px; align-items: center;">
-                        <button class="vote-btn" data-answer-id="${answerData.id}" data-vote-type="like" style="
+                        <button class="vote-btn" data-answer-id="${
+                          answerData.id
+                        }" data-vote-type="like" style="
                             background: transparent;
                             border: 1px solid #ddd;
                             border-radius: 20px;
@@ -579,7 +608,9 @@ class ResponderSystem {
                             <span class="like-count">0</span>
                         </button>
                         
-                        <button class="vote-btn" data-answer-id="${answerData.id}" data-vote-type="dislike" style="
+                        <button class="vote-btn" data-answer-id="${
+                          answerData.id
+                        }" data-vote-type="dislike" style="
                             background: transparent;
                             border: 1px solid #ddd;
                             border-radius: 20px;
