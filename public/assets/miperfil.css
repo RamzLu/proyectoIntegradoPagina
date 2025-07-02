@@ -1,333 +1,452 @@
 /* Reset y configuración base */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #87ceeb 0%, #ffffff 50%, #87ceeb 100%);
+  min-height: 100vh;
+  color: #2c3e50;
+  line-height: 1.6;
 }
 
 /* Contenedor principal */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
 }
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, #ff6b6b, #feca57);
-    padding: 30px;
-    text-align: center;
-    color: white;
+  background: linear-gradient(90deg, #2980b9, #3498db);
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 /* Sección de perfil */
 .profile-section {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 30px;
-    padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 30px;
+  padding: 30px;
 }
 
 /* Tarjetas de perfil */
 .profile-card {
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
 .profile-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Sección de avatar */
 .avatar-section {
-    text-align: center;
+  text-align: center;
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 4px solid #667eea;
-    object-fit: cover;
-    margin-bottom: 15px;
-    transition: transform 0.3s ease;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #667eea;
+  object-fit: cover;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
 }
 
 .avatar:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .upload-btn {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-top: 10px;
-    transition: transform 0.2s ease;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+  transition: transform 0.2s ease;
 }
 
 .upload-btn:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Sección de nivel */
 .level-section h3 {
-    color: #667eea;
-    margin-bottom: 15px;
-    font-size: 1.4em;
+  color: #667eea;
+  margin-bottom: 15px;
+  font-size: 1.4em;
 }
 
 .level-info {
-    background: linear-gradient(45deg, #ff9a9e, #fecfef);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 20px;
+  background: linear-gradient(45deg, #ff9a9e, #fecfef);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .level-number {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #764ba2;
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #764ba2;
 }
 
 /* Barra de progreso */
 .progress-bar {
-    width: 100%;
-    height: 15px;
-    background: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 10px;
+  width: 100%;
+  height: 15px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
 }
 
 .progress-fill {
-    height: 100%;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    border-radius: 10px;
-    transition: width 0.5s ease;
+  height: 100%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.5s ease;
 }
 
 /* Grid de insignias */
 .badges-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
 }
 
 /* Insignias */
 .badge {
-    background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .badge.earned {
-    border-color: #feca57;
-    background: linear-gradient(45deg, #feca57, #ff9ff3);
-    color: white;
-    transform: scale(1.02);
+  border-color: #feca57;
+  background: linear-gradient(45deg, #feca57, #ff9ff3);
+  color: white;
+  transform: scale(1.02);
 }
 
 .badge-icon {
-    font-size: 2em;
-    margin-bottom: 8px;
+  font-size: 2em;
+  margin-bottom: 8px;
 }
 
 /* Sección de edición de avatar */
 .edit-avatar-section {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .edit-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid #667eea;
-    object-fit: cover;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #667eea;
+  object-fit: cover;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
 }
 
 .edit-avatar:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Formularios */
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    outline: none;
-    border-color: #667eea;
+  outline: none;
+  border-color: #667eea;
 }
 
 /* Botones */
 .btn-primary {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.2s ease;
-    width: 100%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+  width: 100%;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 /* Grid de estadísticas */
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .stat-card {
-    background: linear-gradient(45deg, #a8edea, #fed6e3);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+  background: linear-gradient(45deg, #a8edea, #fed6e3);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .stat-number {
-    font-size: 2em;
-    font-weight: bold;
-    color: #764ba2;
+  font-size: 2em;
+  font-weight: bold;
+  color: #764ba2;
 }
 
 .stat-label {
-    color: #555;
-    font-size: 0.9em;
-    margin-top: 5px;
+  color: #555;
+  font-size: 0.9em;
+  margin-top: 5px;
 }
 
 /* Clases de utilidad */
 .hidden {
-    display: none;
+  display: none;
 }
 
 .edit-mode .profile-info {
-    display: none;
+  display: none;
 }
 
 .edit-mode .edit-form {
-    display: block;
+  display: block;
 }
 
 /* Logros */
 .achievements {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 .achievement-item {
-    background: rgba(102, 126, 234, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 4px solid #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 4px solid #667eea;
 }
 
 /* Animaciones */
 @keyframes slideIn {
-    from { 
-        transform: translateX(100%); 
-        opacity: 0; 
-    }
-    to { 
-        transform: translateX(0); 
-        opacity: 1; 
-    }
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes bounceIn {
-    0% { 
-        transform: scale(0) rotate(0deg); 
-        opacity: 0; 
-    }
-    50% { 
-        transform: scale(1.2) rotate(180deg); 
-        opacity: 1; 
-    }
-    100% { 
-        transform: scale(1) rotate(360deg); 
-        opacity: 1; 
-    }
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .profile-section {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+  .profile-section {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 
-    .badges-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .container {
-        margin: 10px;
-        border-radius: 15px;
-    }
+  .container {
+    margin: 10px;
+    border-radius: 15px;
+  }
 
-    .header {
-        padding: 20px;
-    }
+  .header {
+    padding: 20px;
+  }
 
-    .profile-card {
-        padding: 20px;
-    }
+  .profile-card {
+    padding: 20px;
+  }
+}
+
+/* Agregar estas reglas a tu CSS existente para mejorar la funcionalidad */
+
+/* Transiciones suaves para el modo edición */
+.profile-info,
+.edit-form {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.profile-info.hidden,
+.edit-form.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.edit-form:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mejoras para los avatares */
+.avatar,
+.edit-avatar {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar:hover,
+.edit-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* Estilo para botones en estado de carga/éxito */
+.btn-primary.saving {
+  background: linear-gradient(45deg, #26de81, #20bf6b);
+  transform: scale(0.98);
+}
+
+/* Mejoras para las insignias */
+.badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(254, 202, 87, 0.3),
+    transparent
+  );
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.badge.earned::before {
+  opacity: 1;
+}
+
+/* Animaciones adicionales para notificaciones */
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+/* Mejoras responsivas adicionales */
+@media (max-width: 480px) {
+  .avatar,
+  .edit-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .upload-btn {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 10px;
+    font-size: 16px; /* Evita zoom en iOS */
+  }
 }
