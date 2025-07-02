@@ -3,6 +3,10 @@ let currentUser = null;
 let questions = [];
 let users = [];
 
+// Variables para el sistema de etiquetas
+let selectedTags = [];
+const MAX_TAGS = 3;
+
 // Elementos del DOM
 const loginModal = document.getElementById("login-modal");
 const registerModal = document.getElementById("register-modal");
@@ -20,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeApp();
   setupEventListeners();
   loadMockData();
+
+  // Configurar selector de etiquetas después de que se cargue el DOM
+  setTimeout(() => {
+    setupTagSelector();
+  }, 100);
 });
 
 // Inicialización de la aplicación
@@ -105,6 +114,126 @@ function setupEventListeners() {
   });
 }
 
+// Funciones del sistema de etiquetas
+function setupTagSelector() {
+  const tagCheckboxes = document.querySelectorAll(
+    '.tag-options input[type="checkbox"]'
+  );
+  const selectedTagsContainer = document.querySelector(
+    ".selected-tags-container"
+  );
+
+  if (!tagCheckboxes.length) return; // Si no existe el selector, salir
+
+  tagCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", handleTagSelection);
+  });
+
+  updateSelectedTagsDisplay();
+}
+
+function handleTagSelection(e) {
+  const checkbox = e.target;
+  const tagValue = checkbox.value;
+  const category = checkbox.dataset.category;
+
+  if (checkbox.checked) {
+    if (selectedTags.length >= MAX_TAGS) {
+      checkbox.checked = false;
+      showNotification(`Máximo ${MAX_TAGS} etiquetas permitidas`, "warning");
+      return;
+    }
+
+    selectedTags.push({
+      value: tagValue,
+      category: category,
+    });
+  } else {
+    selectedTags = selectedTags.filter((tag) => tag.value !== tagValue);
+  }
+
+  updateSelectedTagsDisplay();
+  updateCheckboxStates();
+}
+
+function updateSelectedTagsDisplay() {
+  const container = document.querySelector(".selected-tags-container");
+
+  if (!container) return; // Si no existe el contenedor, salir
+
+  if (selectedTags.length === 0) {
+    container.innerHTML =
+      '<span class="no-tags-selected">Ninguna etiqueta seleccionada</span>';
+    return;
+  }
+
+  container.innerHTML = selectedTags
+    .map(
+      (tag) => `
+      <div class="selected-tag">
+        <span>${tag.value}</span>
+        <button type="button" class="remove-tag" data-tag="${tag.value}">×</button>
+      </div>
+    `
+    )
+    .join("");
+
+  // Agregar event listeners a los botones de remover
+  container.querySelectorAll(".remove-tag").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const tagValue = e.target.dataset.tag;
+      removeTag(tagValue);
+    });
+  });
+}
+
+function removeTag(tagValue) {
+  selectedTags = selectedTags.filter((tag) => tag.value !== tagValue);
+
+  // Desmarcar el checkbox correspondiente
+  const checkbox = document.querySelector(`input[value="${tagValue}"]`);
+  if (checkbox) {
+    checkbox.checked = false;
+  }
+
+  updateSelectedTagsDisplay();
+  updateCheckboxStates();
+}
+
+function updateCheckboxStates() {
+  const allCheckboxes = document.querySelectorAll(
+    '.tag-options input[type="checkbox"]'
+  );
+
+  allCheckboxes.forEach((checkbox) => {
+    const label = checkbox.closest("label");
+
+    if (selectedTags.length >= MAX_TAGS && !checkbox.checked) {
+      checkbox.disabled = true;
+      label.classList.add("disabled");
+    } else {
+      checkbox.disabled = false;
+      label.classList.remove("disabled");
+    }
+  });
+}
+
+function resetTagSelection() {
+  selectedTags = [];
+  const allCheckboxes = document.querySelectorAll(
+    '.tag-options input[type="checkbox"]'
+  );
+  allCheckboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+    checkbox.disabled = false;
+    const label = checkbox.closest("label");
+    if (label) {
+      label.classList.remove("disabled");
+    }
+  });
+  updateSelectedTagsDisplay();
+}
+
 // Funciones de Modal
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
@@ -120,6 +249,11 @@ function closeModal(modalId) {
   // Limpiar formularios
   const forms = modal.querySelectorAll("form");
   forms.forEach((form) => form.reset());
+
+  // Si es el modal de preguntas, resetear las etiquetas
+  if (modalId === "question-modal") {
+    resetTagSelection();
+  }
 }
 
 // Funciones de autenticación
@@ -206,23 +340,61 @@ function logout() {
   showNotification("Sesión cerrada exitosamente", "success");
 }
 
-// Funciones de preguntas
+// Funciones de preguntas - MODIFICADA para usar el nuevo sistema de etiquetas
 function handleNewQuestion(e) {
   e.preventDefault();
   const inputs = e.target.querySelectorAll("input, textarea");
   const title = inputs[0].value;
   const description = inputs[1].value;
-  const tags = inputs[2].value
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter((tag) => tag);
+  const imageInput = document.getElementById("question-image");
+  const tags = selectedTags.map((tag) => tag.value);
 
   if (!title || !description) {
     showNotification("Por favor completa el título y la descripción", "error");
     return;
   }
 
-  const newQuestion = {
+  if (tags.length === 0) {
+    showNotification("Por favor selecciona al menos una etiqueta", "warning");
+    return;
+  }
+
+  // Leer la imagen si se subió una
+  if (imageInput.files.length > 0) {
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const imageBase64 = event.target.result;
+
+      const newQuestion = createQuestionObject(
+        title,
+        description,
+        tags,
+        imageBase64
+      );
+      questions.unshift(newQuestion);
+      renderQuestions();
+      closeModal("question-modal");
+      showNotification("¡Pregunta publicada con imagen!", "success");
+      document
+        .getElementById("preguntas")
+        .scrollIntoView({ behavior: "smooth" });
+    };
+
+    reader.readAsDataURL(file); // Convierte a base64
+  } else {
+    const newQuestion = createQuestionObject(title, description, tags, null);
+    questions.unshift(newQuestion);
+    renderQuestions();
+    closeModal("question-modal");
+    showNotification("¡Pregunta publicada exitosamente!", "success");
+    document.getElementById("preguntas").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function createQuestionObject(title, description, tags, imageBase64) {
+  return {
     id: Date.now(),
     title: title,
     description: description,
@@ -234,15 +406,8 @@ function handleNewQuestion(e) {
     responses: [],
     rating: 0,
     views: 0,
+    image: imageBase64 || null, // nueva propiedad
   };
-
-  questions.unshift(newQuestion);
-  renderQuestions();
-  closeModal("question-modal");
-  showNotification("¡Pregunta publicada exitosamente!", "success");
-
-  // Scroll to questions section
-  document.getElementById("preguntas").scrollIntoView({ behavior: "smooth" });
 }
 
 function handleRespond(e) {
@@ -320,6 +485,12 @@ function renderQuestions() {
             <div class="question-content">
                 <h3>${question.title}</h3>
                 <p>${question.description}</p>
+                    ${
+                      question.image
+                        ? `<img src="${question.image}" class="question-image" alt="Imagen de la pregunta">`
+                        : ""
+                    }
+
                 <div class="question-tags">
                     ${question.tags
                       .map((tag) => `<span class="tag">${tag}</span>`)
@@ -424,7 +595,7 @@ function loadMockData() {
       title: "¿Cómo resuelvo esta ecuación cuadrática?",
       description:
         "Necesito ayuda con x² + 5x + 6 = 0. No entiendo cómo usar la fórmula cuadrática...",
-      tags: ["Matemática", "Álgebra"],
+      tags: ["Álgebra", "Matemática"],
       author: "Ramiro_15",
       authorAvatar: "R",
       authorLevel: 2,
@@ -451,7 +622,7 @@ function loadMockData() {
       title: "Ayuda con análisis sintáctico",
       description:
         '¿Me pueden ayudar a analizar sintácticamente esta oración? "Los estudiantes estudian mucho para el examen"',
-      tags: ["Lengua", "Sintaxis"],
+      tags: ["Sintaxis", "Lengua"],
       author: "Maria_16",
       authorAvatar: "M",
       authorLevel: 3,
