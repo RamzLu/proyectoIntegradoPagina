@@ -10,9 +10,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <!-- Header -->
     <header class="header">
       <div class="nav-container">
         <div class="logo">
@@ -24,7 +24,7 @@
             <li><a href="index.html">Inicio</a></li>
             <li><a href="index.html#preguntas">Preguntas</a></li>
             <li><a href="index.html#ranking">Ranking</a></li>
-            <li><a href="index.html">Mi Perfil</a></li>
+            <li><a href="miperfil.html">Mi Perfil</a></li>
           </ul>
         </nav>
         <div class="user-actions">
@@ -38,18 +38,12 @@
     </header>
 
     <div class="container">
-      <div class="header">
-        <h1>Mi Perfil</h1>
-        <p>Gestiona tu información personal y logros</p>
-      </div>
-
       <div class="profile-section">
-        <!-- Sección Avatar y Info Básica -->
         <div class="profile-card">
           <div class="avatar-section">
             <img
               id="avatar"
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjYwIiBmaWxsPSIjZTBlMGUwIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDUiIHI9IjIwIiBmaWxsPSIjYjBiMGIwIi8+CjxlbGxpcHNlIGN4PSI2MCIgY3k9IjEwMCIgcng9IjMwIiByeT0iMjAiIGZpbGw9IiNiMGIwYjAiLz4KPC9zdmc+"
+              src="data:image/svg+xml;base64,..."
               alt="Avatar"
               class="avatar"
             />
@@ -69,6 +63,7 @@
 
           <div class="profile-info" id="profileInfo">
             <h3 id="displayName">Usuario Ejemplo</h3>
+            <p class="user-title" id="displayTitle">Novato Curioso</p>
             <p id="displayEmail">usuario@ejemplo.com</p>
             <p id="displayBio">
               ¡Hola! Soy un usuario activo en esta plataforma.
@@ -78,34 +73,19 @@
             </button>
           </div>
 
-          <div class="edit-form hidden" id="editForm">
-            <div class="form-group">
-              <label>Foto de Perfil</label>
-              <div class="edit-avatar-section">
-                <img
-                  id="editAvatar"
-                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjYwIiBmaWxsPSIjZTBlMGUwIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDUiIHI9IjIwIiBmaWxsPSIjYjBiMGIwIi8+CjxlbGxpcHNlIGN4PSI2MCIgY3k9IjEwMCIgcng9IjMwIiByeT0iMjAiIGZpbGw9IiNiMGIwYjAiLz4KPC9zdmc+"
-                  alt="Avatar Editar"
-                  class="edit-avatar"
-                />
-                <input
-                  type="file"
-                  id="editAvatarInput"
-                  accept="image/*"
-                  style="display: none"
-                />
-                <button
-                  type="button"
-                  class="upload-btn"
-                  onclick="document.getElementById('editAvatarInput').click()"
-                >
-                  📸 Cambiar Foto
-                </button>
-              </div>
-            </div>
+          <form class="edit-form hidden" id="editForm">
             <div class="form-group">
               <label>Nombre</label>
               <input type="text" id="editName" value="Usuario Ejemplo" />
+            </div>
+            <div class="form-group">
+              <label>Título</label>
+              <select id="editTitle">
+                <option value="Novato Curioso">Novato Curioso</option>
+                <option value="Aprendiz Veloz">Aprendiz Veloz</option>
+                <option value="Maestro de Trivia">Maestro de Trivia</option>
+                <option value="Sabelotodo">Sabelotodo</option>
+              </select>
             </div>
             <div class="form-group">
               <label>Email</label>
@@ -114,93 +94,154 @@
             <div class="form-group">
               <label>Biografía</label>
               <textarea id="editBio" rows="3">
-¡Hola! Soy un usuario activo en esta plataforma.</textarea
+¡Hola! Soy un usuario activo.</textarea
               >
             </div>
-            <div class="form-group">
-              <label>País</label>
-              <select id="editCountry">
-                <option value="es">España</option>
-                <option value="mx">México</option>
-                <option value="ar">Argentina</option>
-                <option value="co">Colombia</option>
-                <option value="pe">Perú</option>
-              </select>
-            </div>
-            <button class="btn-primary" onclick="saveProfile()">
+            <button id="save-profile-btn" class="btn-primary">
               💾 Guardar
             </button>
             <button
+              type="button"
               class="btn-primary"
               onclick="cancelEdit()"
               style="background: #ff6b6b; margin-top: 10px"
             >
               ❌ Cancelar
             </button>
-          </div>
+          </form>
         </div>
 
-        <!-- Sección Central - Nivel y Logros -->
-        <div class="profile-card">
-          <div class="level-section">
-            <h3>🏆 Tu Progreso</h3>
-            <div class="level-info">
-              <div class="level-number" id="userLevel">15</div>
-              <div>Nivel Experto</div>
+        <div class="main-content">
+          <nav class="profile-tabs">
+            <button class="tab-link active" data-tab="resumen">Resumen</button>
+            <button class="tab-link" data-tab="estadisticas">
+              Estadísticas
+            </button>
+            <button class="tab-link" data-tab="misiones">Misiones</button>
+            <button class="tab-link" data-tab="configuracion">
+              Configuración
+            </button>
+          </nav>
+
+          <div id="tab-resumen" class="tab-content active">
+            <div class="profile-card level-section">
+              <h3>Nivel y Progreso</h3>
+              <div class="level-info">
+                Nivel <span class="level-number" id="userLevel">15</span>
+              </div>
               <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  id="progressFill"
-                  style="width: 75%"
-                ></div>
+                <div class="progress-fill" id="progressFill"></div>
               </div>
-              <small id="progressText"
-                >750 / 1000 XP para el siguiente nivel</small
-              >
+              <p class="progress-text" id="progressText">
+                750 / 1000 XP para el siguiente nivel
+              </p>
             </div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-number" id="totalXP">15,750</div>
-                <div class="stat-label">XP Total</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number" id="badgesEarned">8</div>
-                <div class="stat-label">Insignias</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number" id="daysActive">127</div>
-                <div class="stat-label">Días Activo</div>
-              </div>
+            <div class="profile-card streak-section">
+              <h4>🔥 Racha de Conexión (últimos 7 días)</h4>
+              <div class="streak-visualizer" id="streakVisualizer"></div>
             </div>
+            <div class="profile-card">
+              <h3>🏆 Insignias</h3>
+              <div class="badges-grid" id="badgesGrid"></div>
+            </div>
+          </div>
 
-            <div class="achievements">
-              <h4>🎯 Logros Recientes</h4>
-              <div class="achievement-item">
-                <strong>¡Racha de 7 días!</strong><br />
-                <small>Has estado activo durante una semana seguida</small>
+          <div id="tab-estadisticas" class="tab-content">
+            <div class="profile-card">
+              <h3>📊 Estadísticas de Rendimiento</h3>
+              <div class="stats-grid detailed-stats">
+                <div class="stat-card">
+                  <div class="stat-number" id="totalXP">15,750</div>
+                  <div class="stat-label">XP Total</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-number" id="questionsAnswered">521</div>
+                  <div class="stat-label">Preguntas Respondidas</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-number" id="accuracyRate">82%</div>
+                  <div class="stat-label">Tasa de Aciertos</div>
+                </div>
+
+                <div class="stat-card icon-stat">
+                  <i class="fas fa-fire"></i>
+                  <div class="stat-number" id="bestStreak">23</div>
+                  <div class="stat-label">Mejor Racha</div>
+                </div>
+                <div class="stat-card icon-stat">
+                  <i class="fas fa-stopwatch"></i>
+                  <div class="stat-number" id="avgTime">5.2s</div>
+                  <div class="stat-label">Tiempo Promedio</div>
+                </div>
+                <div class="stat-card icon-stat">
+                  <i class="fas fa-star"></i>
+                  <div class="stat-number" id="favoriteCategory">Ciencia</div>
+                  <div class="stat-label">Categoría Favorita</div>
+                </div>
               </div>
-              <div class="achievement-item">
-                <strong>Explorador</strong><br />
-                <small>Has visitado todas las secciones principales</small>
+              <div class="chart-container">
+                <h4>Rendimiento por Categoría</h4>
+                <canvas id="performanceChart"></canvas>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Sección Insignias -->
-        <div class="profile-card">
-          <h3>🏅 Insignias</h3>
-          <div class="badges-grid" id="badgesGrid">
-            <!-- Las insignias se generarán dinámicamente -->
+          <div id="tab-misiones" class="tab-content">
+            <div class="profile-card">
+              <h3>🎯 Misiones y Hitos</h3>
+              <div id="missionsContainer"></div>
+            </div>
           </div>
-          <button
-            class="btn-primary"
-            onclick="addRandomXP()"
-            style="margin-top: 20px"
-          >
-            ⚡ Ganar XP (+100)
-          </button>
+
+          <div id="tab-configuracion" class="tab-content">
+            <div class="profile-card">
+              <h3>⚙️ Configuración de la Cuenta</h3>
+
+              <div class="settings-section">
+                <h4>🎨 Apariencia</h4>
+                <div class="setting-item">
+                  <label for="theme-toggle">Modo Oscuro</label>
+                  <button id="theme-toggle" class="btn-secondary">
+                    <i class="fas fa-moon"></i> Activar Modo Oscuro
+                  </button>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h4>🔔 Notificaciones</h4>
+                <div class="setting-item">
+                  <label for="email-notifications"
+                    >Notificaciones por correo</label
+                  >
+                  <label class="switch">
+                    <input type="checkbox" id="email-notifications" checked />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="push-notifications">Notificaciones push</label>
+                  <label class="switch">
+                    <input type="checkbox" id="push-notifications" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h4>🔒 Cuenta y Seguridad</h4>
+                <div class="setting-item">
+                  <button class="btn-secondary full-width">
+                    <i class="fas fa-key"></i> Cambiar Contraseña
+                  </button>
+                </div>
+                <div class="setting-item">
+                  <button class="btn-danger full-width">
+                    <i class="fas fa-trash-alt"></i> Eliminar Cuenta
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
