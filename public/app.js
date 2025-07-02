@@ -1,5 +1,3 @@
-// public/app.js
-
 // Variables globales
 let currentUser = null;
 let questions = [];
@@ -99,8 +97,12 @@ function setupEventListeners() {
     .getElementById("question-form")
     .addEventListener("submit", handleNewQuestion);
 
-  // NOTA: El event listener para '.btn-respond' fue eliminado de aquí
-  // porque la lógica completa ya está en 'responder-logic.js'.
+  // Botones de responder
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("btn-respond")) {
+      handleRespond(e);
+    }
+  });
 }
 
 // Funciones de Modal
@@ -131,6 +133,8 @@ function handleLogin(e) {
     formData.get("password") ||
     e.target.querySelector('input[type="password"]').value;
 
+  // Aquí implementarías la lógica real de autenticación
+  // Por ahora, simulamos un login exitoso
   if (username && password) {
     currentUser = {
       id: Date.now(),
@@ -158,6 +162,7 @@ function handleRegister(e) {
   const password = inputs[2].value;
   const confirmPassword = inputs[3].value;
 
+  // Validaciones básicas
   if (!username || !email || !password || !confirmPassword) {
     showNotification("Por favor completa todos los campos", "error");
     return;
@@ -173,6 +178,7 @@ function handleRegister(e) {
     return;
   }
 
+  // Aquí implementarías la lógica real de registro
   currentUser = {
     id: Date.now(),
     username: username,
@@ -235,10 +241,23 @@ function handleNewQuestion(e) {
   closeModal("question-modal");
   showNotification("¡Pregunta publicada exitosamente!", "success");
 
+  // Scroll to questions section
   document.getElementById("preguntas").scrollIntoView({ behavior: "smooth" });
 }
 
-// La función handleRespond fue eliminada.
+function handleRespond(e) {
+  if (!currentUser) {
+    showNotification("Debes iniciar sesión para responder", "warning");
+    openModal("login-modal");
+    return;
+  }
+
+  const questionCard = e.target.closest(".question-card");
+  const questionId = questionCard.dataset.questionId;
+
+  // Aquí implementarías la lógica para abrir un modal de respuesta
+  showNotification("Función de responder en desarrollo", "warning");
+}
 
 // Funciones de UI
 function updateUI() {
@@ -259,6 +278,7 @@ function updateUI() {
             <button class="btn-primary" id="register-btn">Registrarse</button>
         `;
 
+    // Re-attach event listeners
     document
       .getElementById("login-btn")
       .addEventListener("click", () => openModal("login-modal"));
@@ -345,6 +365,7 @@ function formatTimeAgo(timestamp) {
 }
 
 function showNotification(message, type = "success") {
+  // Remover notificación existente si hay una
   const existingNotification = document.querySelector(".notification");
   if (existingNotification) {
     existingNotification.remove();
@@ -356,10 +377,12 @@ function showNotification(message, type = "success") {
 
   document.body.appendChild(notification);
 
+  // Mostrar notificación
   setTimeout(() => {
     notification.classList.add("show");
   }, 100);
 
+  // Ocultar después de 4 segundos
   setTimeout(() => {
     notification.classList.remove("show");
     setTimeout(() => {
@@ -370,6 +393,8 @@ function showNotification(message, type = "success") {
 
 function showUserProfile() {
   if (!currentUser) return;
+
+  // Aquí implementarías la lógica para mostrar el perfil del usuario
   showNotification("Función de perfil en desarrollo", "warning");
 }
 
@@ -394,6 +419,7 @@ function checkUserSession() {
 
 // Datos de ejemplo
 function loadMockData() {
+  // Datos de ejemplo para desarrollo
   const mockQuestions = [
     {
       id: 1,
@@ -486,18 +512,22 @@ function loadMockData() {
 
 // Funciones adicionales para futuras implementaciones
 function searchQuestions(query) {
+  // Implementar búsqueda de preguntas
   console.log("Searching for:", query);
 }
 
 function filterByTag(tag) {
+  // Implementar filtro por etiqueta
   console.log("Filtering by tag:", tag);
 }
 
 function sortQuestions(criteria) {
+  // Implementar ordenamiento (recientes, populares, sin responder)
   console.log("Sorting by:", criteria);
 }
 
 function rateResponse(responseId, rating) {
+  // Implementar calificación de respuestas
   console.log("Rating response:", responseId, "with:", rating);
 }
 
@@ -511,331 +541,3 @@ window.QuienSabe = {
   filterByTag,
   sortQuestions,
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////
-// Lógica para el botón "Responder" en ¿Quién Sabe?
-class ResponderSystem {
-  constructor() {
-    this.currentAnswerId = 1;
-    this.init();
-  }
-
-  init() {
-    this.bindResponderButtons();
-    this.createResponseModal();
-    this.bindLikeDislikeEvents(); // <-- Nuevo: vincula los eventos de like/dislike
-  }
-
-  // Vincular eventos a todos los botones "Responder"
-  bindResponderButtons() {
-    document.addEventListener("click", (e) => {
-      if (e.target.classList.contains("btn-respond")) {
-        e.preventDefault();
-        this.handleResponderClick(e.target);
-      }
-    });
-  }
-
-  // Nuevo: Vincular eventos a los botones de like/dislike
- // Nuevo: Vincular eventos a los botones de like/dislike con lógica de toggle
-  bindLikeDislikeEvents() {
-    document.addEventListener("click", (e) => {
-      const clickedBtn = e.target.closest(".btn-like, .btn-dislike");
-      if (!clickedBtn) return;
-
-      const actionsContainer = clickedBtn.parentElement;
-      const likeBtn = actionsContainer.querySelector(".btn-like");
-      const dislikeBtn = actionsContainer.querySelector(".btn-dislike");
-      
-      const isLikeBtn = clickedBtn.classList.contains('btn-like');
-      const otherBtn = isLikeBtn ? dislikeBtn : likeBtn;
-
-      const countSpan = clickedBtn.querySelector("span");
-      let currentCount = parseInt(countSpan.textContent, 10);
-
-      // 1. Si el botón clickeado ya estaba votado, se quita el voto.
-      if (clickedBtn.classList.contains("voted")) {
-        countSpan.textContent = currentCount - 1;
-        clickedBtn.classList.remove("voted");
-      
-      // 2. Si el OTRO botón estaba votado, se cambia el voto.
-      } else if (otherBtn.classList.contains("voted")) {
-        // Quitar voto del otro botón
-        const otherCountSpan = otherBtn.querySelector('span');
-        let otherCount = parseInt(otherCountSpan.textContent, 10);
-        otherCountSpan.textContent = otherCount - 1;
-        otherBtn.classList.remove('voted');
-
-        // Agregar voto al botón clickeado
-        countSpan.textContent = currentCount + 1;
-        clickedBtn.classList.add("voted");
-
-      // 3. Si no había ningún voto, se agrega el nuevo voto.
-      } else {
-        countSpan.textContent = currentCount + 1;
-        clickedBtn.classList.add("voted");
-      }
-    });
-  }
-
-  // Lógica principal del botón responder
-  handleResponderClick(button) {
-    const questionCard = button.closest(".question-card");
-    if (!questionCard) return;
-
-    const questionData = this.extractQuestionData(questionCard);
-    const existingForm = questionCard.querySelector(".answer-form");
-    if (existingForm) {
-      this.toggleAnswerForm(existingForm);
-      return;
-    }
-    this.showAnswerForm(questionCard, questionData);
-  }
-
-  extractQuestionData(questionCard) {
-    return {
-      title: questionCard.querySelector(".question-content h3")?.textContent || "",
-      id: Date.now(),
-    };
-  }
-
-  showAnswerForm(questionCard, questionData) {
-    const answerForm = this.createAnswerFormHTML(questionData.id);
-    const questionFooter = questionCard.querySelector(".question-footer");
-    questionFooter.insertAdjacentHTML("afterend", answerForm);
-    this.bindAnswerFormEvents(questionCard, questionData);
-    questionCard.querySelector(`#answer-content-${questionData.id}`)?.focus();
-    questionCard.querySelector(".answer-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  createAnswerFormHTML(questionId) {
-    return `
-      <div class="answer-form" id="answer-form-${questionId}" style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 20px; margin-top: 15px; animation: slideDown 0.3s ease-out;">
-        <div style="display: flex; align-items: center; margin-bottom: 15px;">
-          <i class="fas fa-reply" style="color: #6c5ce7; margin-right: 8px;"></i>
-          <h4 style="margin: 0; color: #2d3436;">Tu Respuesta</h4>
-        </div>
-        <form id="submit-answer-${questionId}">
-          <div style="margin-bottom: 15px;">
-            <textarea id="answer-content-${questionId}" placeholder="Escribe tu respuesta aquí. Sé claro y útil..." required style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical; transition: border-color 0.3s ease;"></textarea>
-          </div>
-          <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3436;"><i class="fas fa-paperclip" style="margin-right: 5px;"></i>Adjuntar imagen (opcional)</label>
-            <input type="file" id="answer-image-${questionId}" accept="image/*" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
-          </div>
-          <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button type="button" class="btn-cancel-answer" style="background: #636e72; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Cancelar</button>
-            <button type="submit" style="background: #6c5ce7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500;">Enviar Respuesta</button>
-          </div>
-        </form>
-      </div>`;
-  }
-
-  bindAnswerFormEvents(questionCard, questionData) {
-    const form = questionCard.querySelector(`#submit-answer-${questionData.id}`);
-    const cancelBtn = questionCard.querySelector(".btn-cancel-answer");
-    form?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.handleAnswerSubmit(questionCard, questionData);
-    });
-    cancelBtn?.addEventListener("click", () => {
-      this.hideAnswerForm(questionCard, questionData.id);
-    });
-  }
-
-  handleAnswerSubmit(questionCard, questionData) {
-    const textarea = questionCard.querySelector(`#answer-content-${questionData.id}`);
-    const fileInput = questionCard.querySelector(`#answer-image-${questionData.id}`);
-    const answerContent = textarea.value.trim();
-
-    if (answerContent.length < 10) {
-      this.showNotification("La respuesta debe tener al menos 10 caracteres", "error");
-      textarea.focus();
-      return;
-    }
-    this.submitAnswer({ questionId: questionData.id, content: answerContent, image: fileInput?.files[0] || null, questionTitle: questionData.title }, questionCard);
-  }
-
-  async submitAnswer(answerData, questionCard) {
-    this.showLoadingInForm(questionCard, answerData.questionId);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const result = { success: true, answerId: this.currentAnswerId++, message: "Respuesta enviada correctamente" };
-    if (result.success) {
-      this.handleAnswerSuccess(questionCard, answerData, result);
-    } else {
-      this.handleAnswerError(new Error('Simulated Error'), questionCard, answerData.questionId);
-    }
-  }
-  
-  handleAnswerSuccess(questionCard, answerData, result) {
-    this.hideAnswerForm(questionCard, answerData.questionId);
-    this.updateAnswerCount(questionCard);
-    this.showNotification("¡Respuesta enviada correctamente!", "success");
-    this.addAnswerToDOM(questionCard, { content: answerData.content, author: "Tu Usuario", timestamp: new Date(), id: result.answerId });
-  }
-
-  handleAnswerError(error, questionCard, questionId) {
-    this.hideLoadingInForm(questionCard, questionId);
-    this.showNotification("Error al enviar la respuesta. Intenta nuevamente.", "error");
-    console.error("Error enviando respuesta:", error);
-  }
-
-  showLoadingInForm(questionCard, questionId) {
-    const submitBtn = questionCard.querySelector(`#submit-answer-${questionId} button[type="submit"]`);
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-    }
-  }
-
-  hideLoadingInForm(questionCard, questionId) {
-    const submitBtn = questionCard.querySelector(`#submit-answer-${questionId} button[type="submit"]`);
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = 'Enviar Respuesta';
-    }
-  }
-
-  toggleAnswerForm(form) {
-    form.style.display = (form.style.display === "none") ? "block" : "none";
-    if (form.style.display === "block") {
-      form.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }
-
-  hideAnswerForm(questionCard, questionId) {
-    const form = questionCard.querySelector(`#answer-form-${questionId}`);
-    if (form) {
-      form.style.animation = "slideUp 0.3s ease-out";
-      setTimeout(() => form.remove(), 300);
-    }
-  }
-
-  updateAnswerCount(questionCard) {
-    const statsElement = questionCard.querySelector(".question-stats span");
-    if (statsElement?.textContent.includes("respuestas")) {
-      const currentCount = parseInt(statsElement.textContent.match(/\d+/)[0]);
-      statsElement.innerHTML = `<i class="fas fa-reply"></i> ${currentCount + 1} respuestas`;
-    }
-  }
-  
-  // Modificado: Se agregó la barra de like/dislike
-  addAnswerToDOM(questionCard, answerData) {
-    const answersSection = questionCard.querySelector(".answers-section") || this.createAnswersSection(questionCard);
-    const answerHTML = `
-      <div class="answer-item" style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 15px; margin: 15px 0; border-radius: 8px; animation: fadeIn 0.5s ease-out;">
-        <div class="answer-content" style="margin-bottom: 10px; line-height: 1.6; color: #334155;">
-          ${answerData.content}
-        </div>
-        <div class="answer-meta" style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="font-size: 12px; color: #64748b;">
-            <i class="fas fa-user"></i> ${answerData.author} • 
-            <i class="fas fa-clock"></i> Ahora mismo
-          </div>
-          <div class="answer-actions" style="display: flex; align-items: center; gap: 10px;">
-            <button class="btn-like" style="background: none; border: none; cursor: pointer; color: #64748b; font-size: 14px; transition: all 0.2s;">
-              <i class="fas fa-thumbs-up"></i> <span class="like-count">0</span>
-            </button>
-            <button class="btn-dislike" style="background: none; border: none; cursor: pointer; color: #64748b; font-size: 14px; transition: all 0.2s;">
-              <i class="fas fa-thumbs-down"></i> <span class="dislike-count">0</span>
-            </button>
-          </div>
-        </div>
-      </div>`;
-    answersSection.insertAdjacentHTML("beforeend", answerHTML);
-  }
-
-  createAnswersSection(questionCard) {
-    const section = document.createElement("div");
-    section.className = "answers-section";
-    section.style.marginTop = "20px";
-    section.innerHTML = '<h4><i class="fas fa-comments"></i> Respuestas</h4>';
-    questionCard.appendChild(section);
-    return section;
-  }
-
-  showNotification(message, type = "success") {
-    const existing = document.querySelector(".notification-toast");
-    if (existing) existing.remove();
-    const notification = document.createElement("div");
-    notification.className = "notification-toast";
-    notification.innerHTML = `<i class="fas fa-${type === "success" ? "check-circle" : "exclamation-circle"}"></i> ${message}`;
-    notification.style.cssText = `position: fixed; top: 20px; right: 20px; background: ${type === "success" ? "#00b894" : "#e17055"}; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; font-weight: 500; animation: slideInRight 0.3s ease-out;`;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-      notification.style.animation = "slideOutRight 0.3s ease-out";
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-
-  createResponseModal() {
-    if (document.getElementById("response-modal")) return;
-    const modalHTML = `<div class="modal" id="response-modal"><div class="modal-content"><span class="close" id="response-modal-close">&times;</span><h2 id="response-modal-title">Responder Pregunta</h2><div id="response-question-preview"></div><form id="response-modal-form"><textarea id="response-modal-content" placeholder="Escribe tu respuesta detallada aquí..." rows="8" required></textarea><div class="file-upload"><label for="response-image-upload"><i class="fas fa-image"></i> Subir imagen (opcional)</label><input type="file" id="response-image-upload" accept="image/*" /></div><button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Enviar Respuesta</button></form></div></div>`;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-    this.bindModalEvents();
-  }
-
-  bindModalEvents() {
-    const modal = document.getElementById("response-modal");
-    const closeBtn = document.getElementById("response-modal-close");
-    closeBtn?.addEventListener("click", () => { modal.style.display = "none"; });
-    window.addEventListener("click", (e) => { if (e.target === modal) { modal.style.display = "none"; } });
-  }
-}
-
-// Inyectar CSS adicional para animaciones y estilos de voto
-const additionalCSS = `
-  @keyframes slideUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-  @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
-  .btn-like.voted { color: #22c55e; transform: scale(1.1); }
-  .btn-dislike.voted { color: #ef4444; transform: scale(1.1); }
-  .answer-actions button { transition: color 0.2s, transform 0.2s; }
-`;
-const styleElement = document.createElement("style");
-styleElement.textContent = additionalCSS;
-document.head.appendChild(styleElement);
-
-document.addEventListener("DOMContentLoaded", () => {
-  window.responderSystem = new ResponderSystem();
-});
-
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = ResponderSystem;
-}

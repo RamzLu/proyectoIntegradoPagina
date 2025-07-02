@@ -2,6 +2,7 @@
   "name": "login-system",
   "version": "1.0.0",
   "description": "Sistema de login y registro con Node.js, Express, Sequelize y MySQL",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -26,5 +27,13 @@
     "authentication"
   ],
   "author": "Tu Nombre",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RamzLu/proyectoIntegradoPagina.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RamzLu/proyectoIntegradoPagina/issues"
+  },
+  "homepage": "https://github.com/RamzLu/proyectoIntegradoPagina#readme"
 }
